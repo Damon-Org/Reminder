@@ -37,6 +37,7 @@ export default class Reminder extends BaseModule {
 
         const data = await server.settings.awaitData();
         if (new Date() - data?.reminders?.permissions < PermissionReminderTime) return;
+
         await server.settings.update({ reminders: { permissions: new Date() } });
 
         const actionRow = new MessageActionRow()
@@ -48,7 +49,7 @@ export default class Reminder extends BaseModule {
         );
         const embed = new MessageEmbed()
             .setAuthor(`Permission Update Required`, instance.guild.iconURL())
-            .setDescription(`${this._m.user.username} does not have all its required permissions, to make sure no problems occur in the future you can update the bot's permissions by clicking the button below.`)
+            .setDescription(`${this._m.user.username}'s permission requirements have changed or have not been set correctly.\n\nTo update the permissions of ${this._m.user.username} press the button below and select **${instance.guild.name}** from the drop down menu. Press **continue** and then click **authorize**.\n\nIf you don't have permission to do this ask one of the administrators in this server.\n\nYou can update these right now or you'll be reminded in 1 week.`)
             .setFooter('You may ignore this message but features may stop working in future.');
 
         instance.send({ embeds: [ embed ], components: [ actionRow ] });
